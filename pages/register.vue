@@ -17,8 +17,13 @@
                     v-model="form.username"
                     type="text"
                     placeholder="Username"
+                    :state="usernameState"
+                    trim
                     required
                   ></b-form-input>
+                   <b-form-invalid-feedback id="input-username">
+                    Enter username between 6-10 letters.
+                  </b-form-invalid-feedback>
                 </b-form-group>
 
                 <b-form-group id="input-group-2" label="Password : " label-for="input-password"                
@@ -30,8 +35,12 @@
                     id="input-password"
                     v-model="form.password"
                     type="password"
+                    :state="passwordState"
                     required
                   ></b-form-input>
+                  <b-form-invalid-feedback id="input-password">
+                    Enter password between 6-10 letters.
+                  </b-form-invalid-feedback>
                 </b-form-group>
 
                 <b-form-group id="input-group-3" label="Confirm Password : " label-for="input-confirm-password"                
@@ -43,8 +52,12 @@
                     id="input-confirm-password"
                     v-model="form.confirmPassword"
                     type="password"
+                    :state="confirmPasswordState"
                     required
                   ></b-form-input>
+                  <b-form-invalid-feedback id="input-confirm-password">
+                    Password and confirm password not matching.
+                  </b-form-invalid-feedback>
                 </b-form-group>
 
                 <b-form-group id="input-group-3" label="Email : " label-for="input-email"                
@@ -55,9 +68,13 @@
                   <b-form-input
                     id="input-email"
                     v-model="form.email"
-                    type="email"
+                    type="text"
+                    :state="emailState"
                     required
                   ></b-form-input>
+                   <b-form-invalid-feedback id="input-email">
+                    Email format error.
+                  </b-form-invalid-feedback>
                 </b-form-group>
 
         <b-button type="submit" variant="primary">Register</b-button>
@@ -72,41 +89,67 @@
 <script>
 import axios from 'axios';
   export default {
+    computed: {
+      usernameState() {
+        if(this.form.username.length == 0){
+          return null
+        }else{
+          return this.form.username.length > 6 && this.form.username.length <= 10 ? true : false
+        }
+      },
+      passwordState() {
+        this.form.confirmPassword = ''
+        if(this.form.password.length == 0){
+          return null
+        }else{
+          return this.form.password.length > 6 && this.form.password.length <= 10 ? true : false
+        }
+      },
+      confirmPasswordState() {
+       if(this.form.confirmPassword.length == 0){
+          return null
+       }
+      return this.form.password == this.form.confirmPassword ? true : false
+      },
+      emailState() {
+       if(this.form.email.length == 0){
+          return null
+       }
+      const re = /^(([^<>()[\]\.,;:\s@\"]+(\.[^<>()[\]\.,;:\s@\"]+)*)|(\".+\"))@(([^<>()[\]\.,;:\s@\"]+\.)+[^<>()[\]\.,;:\s@\"]{2,})$/i;
+      return re.test(this.form.email) ? true : false
+      },
+    },
     data() {
       return {
         form: {
           username: '',
           password: '',
-          confirmPassword: ''
-        }
+          confirmPassword: '',
+          email: ''
+        },
       }
     },
+    
     methods: {
       onSubmit(event) {
         event.preventDefault()
-        if(this.form.password != this.form.confirmPassword){
-          this.$bvToast.toast('Your password not match. Please try again', {
-          title: `Error password`,
-          variant: 'danger',
-          solid: true
-          })
-          // return
-        }
         axios({
           method: 'post',
-          headers: {
-            "Access-Control-Allow-Origin": "*",
-            "Content-Type": "application/json"
-          },
           url: 'http://localhost:9999/v1/users/',
           data: this.form
         })
           .then(response => {
             console.log("response: ", response)
+            window.location.href = "/login";
             // do something about response
           })
           .catch(err => {
             console.error(err)
+            this.$bvToast.toast('Username Already existing.', {
+            title: `Username Already existing.`,
+            variant: 'danger',
+            solid: true
+            })
           })
       }
     }
