@@ -49,6 +49,7 @@
 </template>
 
 <script>
+import axios from 'axios';
   export default {
     data() {
       return {
@@ -61,7 +62,25 @@
     methods: {
       onSubmit(event) {
         event.preventDefault()
-        alert(JSON.stringify(this.form))
+        axios({
+          method: 'post',
+          url: 'http://localhost:9999/v1/login/',
+          data: this.form
+        })
+          .then(response => {
+            console.log("response: ", response)
+            window.location.href = "/pokemon_trainer";
+          })
+          .catch(err => {
+            const data = err.response.data
+            console.log(data)
+            console.error(err)
+            this.$bvToast.toast(data.errorMessage, {
+            title: "Error",
+            variant: 'danger',
+            solid: true
+            })
+          })
       }
     }
   }
