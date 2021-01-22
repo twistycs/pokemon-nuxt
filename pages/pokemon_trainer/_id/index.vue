@@ -12,7 +12,7 @@
         Some quick example text to build on the card and make up the bulk of the card's content.
       </b-card-text>
     </b-card>
-</div>
+  </div>
 </div>
 </template>
 
