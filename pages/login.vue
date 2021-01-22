@@ -69,8 +69,8 @@ import axios from 'axios';
         })
           .then(response => {
             console.log("response: ", response)
-            this.$cookies.set("username",this.form.username)
-            this.$cookies.set("token",response.data, {
+            this.$cookies.set("username",response.data.userName)
+            this.$cookies.set("token",response.data.token, {
               path: '/',
               maxAge: 60*60
             })
