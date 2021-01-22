@@ -78,7 +78,7 @@
                 </b-form-group>
 
         <b-button type="submit" variant="primary">Register</b-button>
-        <b-button href="/login">Back</b-button>
+        <b-button to="/login">Back</b-button>
       </b-form>
       </b-col>
       <b-col></b-col>
@@ -89,6 +89,7 @@
 <script>
 import axios from 'axios';
   export default {
+    auth: false, //set global middleware exclude this page look at route in nuxt.config.js
     computed: {
       usernameState() {
         if(this.form.username.length == 0){
