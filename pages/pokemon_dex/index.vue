@@ -5,7 +5,7 @@
   <b-card-group deck>
     <b-card no-body header="Pokemon Trainer List">
         <b-list-group flush v-for="(item, index) in dataUser" :key="index">
-            <b-list-group-item href="/pokemon_trainer/Tharit11" :disabled="item.UserName != username">{{ item.UserName }}</b-list-group-item>
+            <b-list-group-item :href="/pokemon_dex/+item.ID" :disabled="item.ID != id">{{ item.Name }}</b-list-group-item>
         </b-list-group>
     </b-card>
   </b-card-group>
@@ -17,6 +17,7 @@ import axios from 'axios';
 export default {
     data() {
       return {
+        id : this.$cookies.get('id'),
         username : this.$cookies.get('username'),
         dataUser : []
       }
@@ -25,7 +26,7 @@ export default {
           const cookieToken = this.$cookies.get('token')
           axios({
             method: 'get',
-            url: 'http://localhost:9999/v1/users/',
+            url: 'http://localhost:9999/v1/pokemondexs/',
             headers: {
                 'Authorization' : 'Bearer '+ cookieToken
             }
