@@ -95,7 +95,7 @@ import axios from 'axios';
         if(this.form.username.length == 0){
           return null
         }else{
-          return this.form.username.length > 6 && this.form.username.length <= 10 ? true : false
+          return this.form.username.length >= 5 && this.form.username.length <= 10 ? true : false
         }
       },
       passwordState() {
