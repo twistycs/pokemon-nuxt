@@ -69,12 +69,13 @@ import axios from 'axios';
         })
           .then(response => {
             console.log("response: ", response)
+            this.$cookies.set("id",response.data.ID)
             this.$cookies.set("username",response.data.userName)
             this.$cookies.set("token",response.data.token, {
               path: '/',
               maxAge: 60*60
             })
-          window.location.href = "/pokemon_trainer";
+          window.location.href = "/pokemon_dex";
           })
           .catch(err => {
             const data = err.response.data
