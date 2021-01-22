@@ -37,7 +37,7 @@
                 <b-form-group label-cols-sm="4"
                   label-cols-lg="3">
                   <div>
-                    <b-link href="/register" class="d-flex justify-content-start">Sign up</b-link>
+                    <NuxtLink to="/register" class="d-flex justify-content-start">Sign up</NuxtLink>
                   </div>
                 </b-form-group>
         <b-button type="submit" variant="primary">Log In</b-button>
@@ -69,7 +69,12 @@ import axios from 'axios';
         })
           .then(response => {
             console.log("response: ", response)
-            window.location.href = "/pokemon_trainer";
+            this.$cookies.set("username",this.form.username)
+            this.$cookies.set("token",response.data, {
+              path: '/',
+              maxAge: 60*60
+            })
+          window.location.href = "/pokemon_trainer";
           })
           .catch(err => {
             const data = err.response.data
